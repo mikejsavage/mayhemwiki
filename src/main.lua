@@ -122,6 +122,8 @@ local authenticated_routes = {
 
 		{ "logout", function( request )
 			request:delete_cookie( "session" )
+			request:delete_cookie( "csrf" )
+
 			return request:redirect( "/" )
 		end },
 	},
