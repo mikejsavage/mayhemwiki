@@ -14,6 +14,6 @@ local username = io.stdin:read( "*line" )
 local password = words.get_random()
 local digest = bcrypt.digest( password, config.bcrypt_rounds )
 
-db:run( "INSERT INTO users ( username, password ) VALUES ( ?, ? )", username, digest )
+db:run( "INSERT INTO users ( username, password ) VALUES ( ?, ? )", username:lower(), digest )
 
 print( "Your password is: " .. password )

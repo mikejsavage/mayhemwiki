@@ -13,6 +13,12 @@ return function( request )
 		return
 	end
 
+	if request.post.username == "" then
+		return request:redirect( "/accounts" )
+	end
+
+	request.post.username = request.post.username:lower()
+
 	local user = db:first( "SELECT 1 FROM users WHERE username = ?", request.post.username )
 
 	if user then
