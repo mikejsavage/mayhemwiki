@@ -7,7 +7,7 @@ return function( request )
 		SELECT p.title, r.date, u.username
 		FROM pages AS p, revisions AS r, users AS u
 		WHERE p.revision_id == r.id AND r.author == u.id
-		ORDER BY p.title COLLATE NOCASE ASC
+		ORDER BY p.title COLLATE NOCASE
 	]] ) do
 		request:html( function( html )
 			return html.div( {
