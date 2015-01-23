@@ -21,7 +21,7 @@ return function( request, title, revision )
 	local page = select_revision( title, revision )
 
 	request:html( function( html )
-		return html.div( {
+		return html.div[ ".subheader" ]( {
 			html.strong( title .. ":" ),
 			" ",
 			html.a( { href = "/" .. title .. "/edit" }, "[edit]" ),

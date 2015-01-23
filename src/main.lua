@@ -6,6 +6,7 @@ local flea = require( "flea" )
 local time = require( "flea.time" )
 
 local db = require( "db" )
+local minify = require( "minify" )
 
 if not db:first( "SELECT 1 FROM users" ) then
 	print( "You don't have any accounts. Run new_account.lua to create one." )
@@ -46,10 +47,16 @@ local function make_callback( handler )
 	return callback
 end
 
+local css = minify.css( io.readFile( "style.css" ) )
+
 local function require_auth( handler )
 	local callback = make_callback( handler )
 
 	return function( request, ... )
+		request:html( function( html )
+			return html.meta( { name = "viewport", content = "width=device-width, initial-scale=1" } )
+		end )
+
 		if request.cookies.session then
 			request.user = db:first( "SELECT * FROM users WHERE id = ? AND enabled = 1", request.cookies.session )
 		end
@@ -67,20 +74,25 @@ local function require_auth( handler )
 		end
 
 		request:html( function( html )
-			return html.div( {
+			return html.style( { type = "text/css" }, css )
+		end )
+
+		request:html( function( html )
+			return html.div[ ".header" ]( {
 				html.a( { href = "/index" }, html.b( "mayhemwiki" ) ),
 				" ",
-				html.a( { href = "/all" }, "[all]" ),
+				html.a( { href = "/all" }, "all" ),
 				" ",
-				html.a( { href = "/accounts" }, "[accounts]" ),
+				html.a( { href = "/accounts" }, "accounts" ),
 				" ",
-				html.a( { href = "/changes" }, "[changes]" ),
+				html.a( { href = "/changes" }, "changes" ),
 				" ",
-				html.a( { href = "/logout" }, "[log out " .. request.user.username .. "]" ),
+				html.a( { href = "/logout" }, "log out " .. request.user.username ),
 				" ",
+
 				html.form( { action = "jump", style = "display: inline" }, {
-					html.input( { name = "title", type = "text" } ),
-					html.input( { type = "submit", value = "Jump to page" } ),
+					html.input[ ".jump" ]( { name = "title", type = "text" } ),
+					html.input[ ".jump-button" ]( { type = "submit", value = "Jump to page" } ),
 				} ),
 			} )
 		end )
