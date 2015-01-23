@@ -1,4 +1,5 @@
 local db = require( "db" )
+local log = require( "log" )
 local csrf = require( "flea.csrf" )
 
 return function( request )
@@ -10,7 +11,12 @@ return function( request )
 		return
 	end
 
-	db:run( "UPDATE users SET enabled = 0 WHERE id = ?", request.post.user_id )
+	local user = db:first( "SELECT username FROM users WHERE id = ?", request.post.user_id )
+
+	if user then
+		db:run( "UPDATE users SET enabled = 0 WHERE id = ?", request.post.user_id )
+		log.info( "%s disabled account %s", request.user.username, user.username )
+	end
 
 	request:redirect( "/accounts?disabled" )
 end

@@ -1,6 +1,7 @@
 local bcrypt = require( "bcrypt" )
 
 local db = require( "db" )
+local log = require( "log" )
 local words = require( "words" )
 local csrf = require( "flea.csrf" )
 
@@ -29,6 +30,7 @@ return function( request )
 	local digest = bcrypt.digest( password, config.bcrypt_rounds )
 
 	db:run( "INSERT INTO users ( username, password ) VALUES ( ?, ? )", request.post.username, digest )
+	log.info( "%s added account %s", request.user.username, request.post.username )
 
 	request:redirect( "/accounts?newuser=" .. password )
 end
