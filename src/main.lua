@@ -84,7 +84,7 @@ local function require_auth( handler )
 				html.a( { href = "/logout" }, "log out " .. request.user.username ),
 				" ",
 
-				html.form( { action = "jump", style = "display: inline" }, {
+				html.form( { action = "jump" }, {
 					html.input[ ".jump" ]( { name = "title", type = "text" } ),
 					html.input[ ".jump-button" ]( { type = "submit", value = "Jump to page" } ),
 				} ),
