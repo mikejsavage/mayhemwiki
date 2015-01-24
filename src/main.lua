@@ -74,15 +74,10 @@ local function require_auth( handler )
 		request:html( function( html )
 			return html.div[ ".header" ]( {
 				html.a( { href = "/index" }, html.b( "mayhemwiki" ) ),
-				" ",
 				html.a( { href = "/all" }, "all" ),
-				" ",
 				html.a( { href = "/accounts" }, "accounts" ),
-				" ",
 				html.a( { href = "/changes" }, "changes" ),
-				" ",
 				html.a( { href = "/logout" }, "log out " .. request.user.username ),
-				" ",
 
 				html.form( { action = "jump" }, {
 					html.input[ ".jump" ]( { name = "title", type = "text" } ),
