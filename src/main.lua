@@ -13,12 +13,6 @@ if not db:first( "SELECT 1 FROM users" ) then
 	os.exit( 1 )
 end
 
-local function serialize_user_to_cookie( request, user )
-	local serialized = json.encode( user )
-
-	request:set_cookie( "session", serialized, time.days( 30 ) )
-end
-
 local login_page = assert( dofile( "pages/get/login.lua" ) )
 local function show_login_page( request )
 	login_page( request )
