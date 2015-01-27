@@ -15,10 +15,7 @@
 
 local _M = { }
 
-function _M.render( str )
-	str = str:html_escape()
-	str = str:gsub( "\r", "" )
-
+local function render_non_code( str )
 	str = ( "\n" .. str ):gsub( "\n(##?#?#?#?)(%s*)([^\n]+)", function( hashes, space, header )
 		local tag = "h" .. hashes:len()
 
@@ -48,6 +45,25 @@ function _M.render( str )
 	end )
 
 	return str
+end
+
+function _M.render( str )
+	str = str:html_escape()
+	str = str:gsub( "\r", "" )
+
+	local rendered = { }
+
+	for non_code, ticks, code in ( str .. "``" ):gmatch( "(.-)(`+)(.-)`+" ) do
+		table.insert( rendered, render_non_code( non_code ) )
+
+		if ticks:len() == 1 then
+			table.insert( rendered, "<code>" .. code .. "</code>" )
+		else
+			table.insert( rendered, "<pre><code>" .. code .. "</code></pre>" )
+		end
+	end
+
+	return table.concat( rendered )
 end
 
 return _M
