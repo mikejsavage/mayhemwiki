@@ -15,6 +15,12 @@
 
 local _M = { }
 
+local function bad_url_protocol( url )
+	local protocol = url:match( "^(.-):" )
+
+	return protocol ~= "http" and protocol ~= "https"
+end
+
 local function render_non_code( str )
 	str = ( "\n" .. str ):gsub( "\n(##?#?#?#?)(%s*)([^\n]+)", function( hashes, space, header )
 		local tag = "h" .. hashes:len()
@@ -34,6 +40,10 @@ local function render_non_code( str )
 	str = str:gsub( "(%b[])(%b())", function( text, url )
 		text = text:sub( 2, -2 )
 		url = url:sub( 2, -2 )
+
+		if bad_url_protocol( url ) then
+			return "[" .. text .. "](put a protocol in here: " .. url .. ")"
+		end
 
 		return "<a href=\"" .. url:url_escape() .. "\">" .. text .. "</a>"
 	end )
