@@ -40,6 +40,7 @@ img {
 }
 
 .header a {
+	border-radius: 0.5em;
 	color: #cedbde;
 	display: inline-block;
 	line-height: 1em;
@@ -50,7 +51,6 @@ img {
 
 .header a:hover {
 	background: #333;
-	border-radius: 0.5em;
 	color: #fff;
 	text-decoration: underline;
 }
