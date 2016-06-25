@@ -33,6 +33,6 @@ db:run( [[ CREATE TABLE IF NOT EXISTS pages (
 
 db:run( "CREATE INDEX IF NOT EXISTS idx_pages_revision_id ON pages ( revision_id )" )
 
-db:run( "PRAGMA foriegn_keys = ON" )
+db:run( "PRAGMA foreign_keys = ON" )
 
 return db
